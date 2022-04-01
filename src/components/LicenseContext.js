@@ -4,15 +4,10 @@ import info from "../info";
 import WashLocations from "./WashLocations";
 
 const LicenseContext = createContext();
-const LicenseLocationClicked = createContext();
 const LocationContext = createContext();
 
 export function useLicense() {
     return useContext(LicenseContext)
-}
-
-export function useLicenseClick() {
-    return useContext(LicenseLocationClicked)
 }
 
 export function useLocations() {
@@ -23,13 +18,13 @@ export function LicenseProvider({ children }) {
     const [license, setLicense] = useState([])
     const [locations, setLocations] = useState([])
 
-    function locationClicked() {   
+    useEffect(() => {  
         axios
         .get(info.backendUrl + "/cam/" + locations.id)
         .then((response) => {
             setLicense(response.data.response.lpn)
         })
-    }
+    }, [])
 
     useEffect(() => {
         axios
@@ -37,17 +32,15 @@ export function LicenseProvider({ children }) {
             .then((response) => {
             setLocations(response.data.response.locations)
             })
-        }, [])
+    }, [])
       
 
 
     return(
         <LicenseContext.Provider value={license}>
-            <LicenseLocationClicked value={locationClicked}>
                 <LocationContext value={locations}>
                     {children}
                 </LocationContext>
-            </LicenseLocationClicked>
         </LicenseContext.Provider>
     )
 }
