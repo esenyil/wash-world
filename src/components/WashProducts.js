@@ -17,10 +17,11 @@ function WashProducts() {
     const [washFinish, setWashFinish] = useState("");
     const [showWashFinish, setShowWashFinish] = useState(false)
 
-    //
+    //useParams router-dom hook - returns an object of key/value pairs of URL parameters. Use it to access match.
     let { locationid, lpn } = useParams()
     let navigate = useNavigate()
 
+    // get the products depende on the LPN - save product info to products state
     useEffect(() => {
         if(lpn){
             axios
@@ -35,8 +36,6 @@ function WashProducts() {
             axios
             .post(info.backendUrl + '/' + locationid + '/start/' + productprogram)
             .then((response) => {
-                console.log(response.data)
-                console.log(response.data.status)
                 if(response.data.status === undefined) {
                     setTimer('Ingen program')
                     setShowTimer(false)
@@ -49,6 +48,7 @@ function WashProducts() {
     }
 
     //Could have had this part in a separate component and the jsx
+    //timer function
     function handleClickTimer(){
         const startingMinutes = parseInt(timer); //state timer
         let time = startingMinutes * 60;

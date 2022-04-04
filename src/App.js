@@ -15,7 +15,7 @@ function App() {
   //useState with empty array
   const [locations, setLocations] = useState([])
 
-  // initial api call and setting the info we get from the api into setLocations
+  // initial api call and setting the location info we get from the api into setLocations
   useEffect(() => {
     axios
       .get(info.backendUrl + "/locations")

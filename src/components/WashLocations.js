@@ -9,7 +9,8 @@ function WashLocations({ locations }) {
     // useNavigate navigates to another page
     let navigate = useNavigate()
 
-    // gets location 
+    // gets camera from location - taking the response and getting the license plate - getRandomLPN 'shuffles' the licensplate
+    //Through navigate passing it to product component and using it with useParams
     function handleClick(locationid, event) {
         axios
         .get(info.backendUrl + "/cam/" + locationid)
@@ -25,6 +26,7 @@ function WashLocations({ locations }) {
         })
     }
 
+    // Shuffle function
     function getRandomLPN(lpn) {
         const chars = lpn.slice(0, 2);
         const numbers = lpn.slice(2) - Math.round(Math.random() * 1);
