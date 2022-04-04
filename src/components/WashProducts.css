@@ -34,21 +34,24 @@ button:disabled{
     background-color: grey;
     border-bottom: 1px solid rgb(79, 79, 79);
     box-shadow: inset 0 -1px 0 0 rgb(79, 79, 79);
-    content: "Lukket";
 } 
 
 .btn-wrapper {
-    width: 200px;
-    height: 0;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
 }
 
 .btn-tilbage {
     margin-top: 3rem;
-    margin-left: 4rem;
+    margin-bottom: 2rem;
 }
+
+/* timer */
 
 .timer-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 500px;
@@ -57,4 +60,24 @@ button:disabled{
 .timer{
     font-size: 70px;
     font-weight: 900;
+}
+.timer-text{
+    font-size: 40px;
+}
+
+.btn-startwash{
+    display: flex;
+    align-self: center;
+    margin-top: 2rem;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.3rem;
+    background-color: #06c167;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #198b47;
+    box-shadow: inset 0 -1px 0 0 #188c47;
+}
+
+.displaynone{
+    display: none
 }

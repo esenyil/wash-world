@@ -5,22 +5,26 @@ import './WashProducts.css';
 import info from "../info";
 import axios from 'axios';
 
-
 function WashProducts() {
     const [products, setProducts] = useState([])
     const [timer, setTimer] = useState(null)
+    
+    // timer state
     const [showTimer, setShowTimer] = useState(false)
     const [min, setMin] = useState(0)
     const [sec, setSec] = useState(0)
+    const [showTimeLeft, setShowTimeLeft] = useState(false)
+    const [washFinish, setWashFinish] = useState("");
+    const [showWashFinish, setShowWashFinish] = useState(false)
 
+    //
     let { locationid, lpn } = useParams()
     let navigate = useNavigate()
 
     useEffect(() => {
-        console.log('lpn', lpn)
         if(lpn){
             axios
-            .get(info.backendUrl + `/products/:${lpn}`)
+            .get(info.backendUrl + `/products/${lpn}`)
             .then((response) => {
               setProducts(response.data.response.products)
             })
@@ -34,7 +38,8 @@ function WashProducts() {
                 console.log(response.data)
                 console.log(response.data.status)
                 if(response.data.status === undefined) {
-                    setTimer('No program')
+                    setTimer('Ingen program')
+                    setShowTimer(false)
                 }
                 else if(response.data.status === "success") {
                     setTimer(response.data.response.estimated_duration)
@@ -43,34 +48,33 @@ function WashProducts() {
             })       
     }
 
-    useEffect(() =>{
+    //Could have had this part in a separate component and the jsx
+    function handleClickTimer(){
         const startingMinutes = parseInt(timer); //state timer
-        console.log(timer)
         let time = startingMinutes * 60;
         
-        const startInterval = setInterval(() => {
+        const startInterval = setInterval(() => { 
             const minutes = Math.floor(time / 60)
             let seconds = time % 60;
             seconds = seconds < 10 ? '0' + seconds : seconds;
         
             setMin(minutes)
-            setSec(seconds)    
+            setSec(seconds)
             time--;
+            setShowTimeLeft(true)
             
             if(minutes <= 0 && seconds <= 0){
                 clearInterval(startInterval)
+                setWashFinish("Din vask er færdig!");
+                setShowWashFinish(true)
             }
         }, 1000);
-    },[])
-
-    function handleClickBack() {
-        navigate('/')
     }
 
     return(
         <>        
             {!showTimer && <div className="btn-wrapper">
-                <button className="btn-tilbage" onClick={handleClickBack}>Tilbage</button>
+                <button className="btn-tilbage" onClick={() => {navigate('/')}}>Tilbage</button>
             </div>}
 
             {!showTimer &&
@@ -80,20 +84,35 @@ function WashProducts() {
                         <div key={product.productid}>
                         <div className="product-wrapper" key={product.productid}>
                             <h2 className="product-name">{product.name}</h2>
-                            <p className="product-price">{product.price}</p>
+                            {product.price == 0 ? <p>Premium medlem</p> : ''}
+                            <p className="product-price">{product.price == 0 ? 'Gratis' : product.price}</p>
                             <p className="product-text">{product.description}</p>
-                            <button onClick={() => {handleClick(product.program)}}>Vælg</button>
+                            <button onClick={() =>{handleClick(product.program)}}>Vælg</button>
                         </div>
                     </div>
                     )
                 })}
             </div>}
 
-            {showTimer && 
+            {showTimer && !showTimeLeft && (
+            <div className="timer-container">
+                <p className="timer-text">{timer === 'Ingen program' ? "Ingen program" : `Din vask varer: ${timer} min`}</p>
+                {timer === 'Ingen program' ? '' : <button className={showTimeLeft ? "displaynone" : "btn-startwash"} onClick={handleClickTimer}>Start vask</button>}
+            </div>
+            )}
+
+            {showTimer && showWashFinish && (
                 <div className='timer-container'>
-                    <button></button>
-                <p className='timer' >{min}:{sec}</p>
-            </div>}
+                    <p className="timer-text">{washFinish}</p>
+                </div>  
+            )}
+
+            {showTimeLeft && !showWashFinish && (
+                <div className='timer-container'>
+                    <div className='timer'>{min}:{sec}</div>
+                </div>
+            )}
+
         </>
     )
 };
