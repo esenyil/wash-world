@@ -29,7 +29,7 @@ function App() {
 
   //telling the browser which component belongs to the specific url
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/wash-world/'>
       <Header />
       <Routes>
         <Route path="/" element={<WashLocations locations={locations} />} />
