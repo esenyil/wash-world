@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/wash-world/static/css/main.79954c54.css",
+    "main.js": "/wash-world/static/js/main.fc3a8129.js",
+    "static/media/WW-logo-sort-tekst.svg": "/wash-world/static/media/WW-logo-sort-tekst.c46f2c0382b77a4d838fee5d20ce6c9c.svg",
+    "index.html": "/wash-world/index.html",
+    "main.79954c54.css.map": "/wash-world/static/css/main.79954c54.css.map",
+    "main.fc3a8129.js.map": "/wash-world/static/js/main.fc3a8129.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.79954c54.css",
+    "static/js/main.fc3a8129.js"
+  ]
+}
